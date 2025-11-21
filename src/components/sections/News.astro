@@ -1,0 +1,159 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const featuredPost = sortedNews[0];
+const sidePosts = sortedNews.slice(1, 3);
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+};
+
+const getTagColor = (tag: string) => {
+  const colors: Record<string, string> = {
+    Design: "bg-purple-500/10 text-purple-400",
+    Research: "bg-blue-500/10 text-blue-400",
+    Presentation: "bg-pink-500/10 text-pink-400",
+    default: "bg-zinc-800 text-zinc-300"
+  };
+  return colors[tag] || colors.default;
+};
+
+// 🔥 新增：定义一组好看的渐变色（符合暗黑科技风）
+const gradients = [
+  "bg-gradient-to-br from-purple-900 to-indigo-900", // 紫蓝
+  "bg-gradient-to-br from-red-900 to-orange-900",    // 红橙
+  "bg-gradient-to-br from-blue-900 to-cyan-900",     // 深海蓝
+  "bg-gradient-to-br from-emerald-900 to-teal-900",  // 翡翠绿
+  "bg-gradient-to-br from-zinc-800 to-zinc-950",     // 极简灰
+  "bg-gradient-to-br from-pink-900 to-rose-900",     // 玫瑰红
+];
+
+// 🔥 新增：根据标题获取固定的背景色
+// 这样同一篇文章永远是同一个颜色，不会刷新变色
+const getPlaceholder = (title: string) => {
+  const index = title.length % gradients.length;
+  return gradients[index];
+};
+---
+
+<section class="py-24 bg-black text-white">
+  <div class="container mx-auto px-4 max-w-7xl">
+    <div class="flex justify-between items-end mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight">What's New</h2>
+      <a href="/news" class="group flex items-center gap-2 px-6 py-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+        <span class="font-medium">View ALL</span>
+        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      
+      {/* ================= 左侧：Featured Post ================= */}
+      {featuredPost && (
+        <article class="group cursor-pointer flex flex-col gap-6">
+          {/* 图片区域：判断是否有图 */}
+          <div class={`relative overflow-hidden rounded-2xl aspect-video border border-white/10 ${!featuredPost.data.image ? getPlaceholder(featuredPost.data.title) : ''}`}>
+            
+            {featuredPost.data.image ? (
+              <img 
+                src={featuredPost.data.image} 
+                alt={featuredPost.data.title} 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            ) : (
+              // 如果没图，显示一个默认的文字或 Logo
+              <div class="w-full h-full flex items-center justify-center p-10 group-hover:scale-105 transition-transform duration-700">
+                 <h3 class="text-3xl font-black text-white/20 uppercase tracking-widest text-center leading-tight">
+                    {featuredPost.data.title}
+                 </h3>
+              </div>
+            )}
+
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center gap-2 text-sm text-zinc-500">
+              <span>{featuredPost.data.author}</span>
+              <span>•</span>
+              <span>{formatDate(featuredPost.data.pubDate)}</span>
+            </div>
+            
+            <div class="flex justify-between items-start">
+               <h3 class="text-2xl font-bold group-hover:text-red-700 transition-colors leading-tight">
+                {featuredPost.data.title}
+              </h3>
+              <ArrowUpRight className="w-6 h-6 text-zinc-600 group-hover:text-red-700 transition-colors" />
+            </div>
+           
+            <p class="text-zinc-400 line-clamp-2">
+              {featuredPost.data.description}
+            </p>
+
+            <div class="flex flex-wrap gap-2 pt-2">
+              {featuredPost.data.tags.map(tag => (
+                <span class={`px-3 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </article>
+      )}
+
+      {/* ================= 右侧：Side Posts ================= */}
+      <div class="flex flex-col gap-8 justify-between">
+        {sidePosts.map(post => (
+          <article class="group cursor-pointer flex flex-col sm:flex-row gap-6 items-start h-full">
+            
+            {/* 右侧列表图片区域 */}
+            <div class={`w-full sm:w-56 aspect-[4/3] shrink-0 overflow-hidden rounded-xl border border-white/10 ${!post.data.image ? getPlaceholder(post.data.title) : ''}`}>
+              
+              {post.data.image ? (
+                <img 
+                  src={post.data.image} 
+                  alt={post.data.title} 
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center p-4 group-hover:scale-110 transition-transform duration-500">
+                   {/* 在小图里，我们显示一个简单的 ICON 代替文字，显得更精致 */}
+                   <span class="text-4xl text-white/20 font-black">IMG</span>
+                </div>
+              )}
+
+            </div>
+
+            <div class="flex flex-col justify-center h-full space-y-2">
+               <div class="flex items-center gap-2 text-xs text-zinc-500">
+                <span>{post.data.author}</span>
+                <span>•</span>
+                <span>{formatDate(post.data.pubDate)}</span>
+              </div>
+
+              <h3 class="text-xl font-bold group-hover:text-red-700 transition-colors line-clamp-2">
+                {post.data.title}
+              </h3>
+
+              <p class="text-zinc-400 text-sm line-clamp-2 mb-2">
+                {post.data.description}
+              </p>
+
+              <div class="flex flex-wrap gap-2 mt-auto">
+                {post.data.tags.slice(0, 2).map(tag => (
+                  <span class={`px-2.5 py-0.5 rounded-md text-[10px] font-medium ${getTagColor(tag)}`}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</section>

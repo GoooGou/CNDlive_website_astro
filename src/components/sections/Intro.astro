@@ -1,0 +1,36 @@
+---
+// src/components/sections/Intro.astro
+import { TypewriterEffect } from "@/components/ui/TypewriterEffect";
+---
+
+<section class="py-20 bg-black text-center px-4">
+  <div class="max-w-3xl mx-auto space-y-6">
+    
+    <h2 class="text-4xl md:text-6xl font-bold text-white tracking-tight animate-fade-in-up">
+      The Future of <br />
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
+        Live Streaming
+      </span>
+    </h2>
+
+    <div class="text-xl text-zinc-400 leading-relaxed min-h-[100px]">
+      <TypewriterEffect 
+        client:visible 
+        text="We provide the ultimate hardware ecosystem for content creators. From capture cards to encoders, everything is designed for zero latency." 
+        speed={0.02} 
+      />
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* 标题的简单上浮动画 */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+</style>

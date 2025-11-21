@@ -1,0 +1,22 @@
+---
+title: "SRT vs. RTMP: Why It's Time to Switch for Remote Production"
+description: "A deep dive into Secure Reliable Transport (SRT) protocol and why it outperforms legacy RTMP in unstable network conditions."
+pubDate: 2024-07-20
+author: "Lana Steiner"
+image: "/images/news/srt-protocol.png"
+tags: ["Research", "SRT", "Streaming Protocols"]
+---
+
+For over a decade, RTMP (Real-Time Messaging Protocol) has been the king of live streaming. However, as remote production demands higher reliability over the public internet, **SRT (Secure Reliable Transport)** is taking the throne.
+
+## The Problem with RTMP
+
+RTMP relies on TCP, which can cause buffering loops when packet loss occurs. It wasn't designed for the modern, fluctuating conditions of cellular (4G/5G) or congested public networks.
+
+## Why SRT Wins
+
+* **Packet Loss Recovery**: SRT uses advanced retransmission techniques to recover lost video packets without adding significant latency.
+* **Security**: Built-in AES-128/256 encryption keeps your feed safe.
+* **Firewall Traversal**: SRT's caller/listener modes make it easier to navigate complex corporate firewalls.
+
+At CNDLive, we recommend using SRT for point-to-point contribution (e.g., Camera to Studio) and RTMP for final distribution (e.g., Studio to YouTube).

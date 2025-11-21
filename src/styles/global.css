@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  /* --- 品牌色 --- */
+  --color-primary: #ac121f;
+  --color-primary-dark: #8a0e19;
+
+  /* --- Surface (表面色) 系统 --- */
+
+  /* Level 0: 页面最底层背景 (接近纯黑，但不是 #000，更有质感) */
+  --color-surface-base: #050505;
+
+  /* Level 1: 页脚、次要区域 (稍微提亮，用于 Footer) */
+  --color-surface-muted: #121212;
+
+  /* Level 2: 卡片、内容块 (标准深灰，用于 News 卡片) */
+  --color-surface-card: #121212;
+
+  /* Level 3: 悬浮层、下拉菜单 (需要比背景明显亮一点，用于 Mega Menu) */
+  --color-surface-overlay: #171717;
+
+  /* Level 4: 交互高亮、Hover状态 (鼠标放上去的颜色) */
+  --color-surface-hover: #262626;
+
+  /* Border: 专用的边框颜色 (深灰色，用于分割线) */
+  --color-surface-border: #27272a;
+
+  /* 1. 定义动画工具类名: --animate-[名称] */
+  --animate-infinite-scroll: infinite-scroll 25s linear infinite;
+
+  /* 2. 定义关键帧 */
+  @keyframes infinite-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+}
+
+/* 基础应用 */
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: white;
+  color: white;
+}

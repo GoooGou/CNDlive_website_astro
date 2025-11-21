@@ -1,0 +1,18 @@
+---
+interface Props {
+  class?: string;
+  [key: string]: any;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<main {...rest} class="flex-grow pt-20">
+  {/* 1. 全宽区域：不受 container 限制，直接渲染在 main 下 */}
+  <slot name="full-width"  />
+
+  {/* 2. 普通区域：受 container 限制 */}
+  <div class:list={["container max-w-7xl mx-auto px-4 relative z-0", className]}>
+    <slot /> {/* 默认插槽 */}
+  </div>
+</main>

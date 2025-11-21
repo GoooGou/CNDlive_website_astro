@@ -1,0 +1,32 @@
+---
+// src/components/features/BentoItem.astro
+
+interface Props {
+  title: string;
+  description: string;
+  class?: string; // 允许传入 col-span-2 等类名来控制大小
+}
+
+// 接收参数
+const { title, description, class: className } = Astro.props;
+---
+
+<div class:list={[
+  "group relative overflow-hidden rounded-3xl bg-zinc-900/50 p-8 border border-white/10 hover:border-red-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-red-900/20",
+  className
+]}>
+  
+  <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-gradient-to-br from-red-600/10 to-transparent blur-[60px] group-hover:from-red-600/30 transition-all duration-500"></div>
+  
+  <div class="relative z-10 flex flex-col h-full justify-between">
+    <div class="mb-4 text-zinc-500 group-hover:text-white transition-colors duration-300">
+      <slot name="icon" />
+    </div>
+
+    <div>
+      <h3 class="text-xl font-bold text-white mb-2 group-hover:translate-x-1 transition-transform duration-300">{title}</h3>
+      <p class="text-zinc-400 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors">{description}</p>
+    </div>
+  </div>
+
+</div>

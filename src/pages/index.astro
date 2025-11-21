@@ -1,11 +1,40 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Hero from "@/components/Hero.astro";
+import Layout from "../layouts/Layout.astro";
+import { HeroCarousel } from "@/components/hero/HeroCarousel.tsx";
+// 1. 引入类型
+import type { HeroData } from "@/components/hero/themePresets.ts";
+import { slidesData } from "@/components/hero/slidesData"; // 👈 引入刚才抽离的数据
+import Main from "@/components/Main.astro";
+import Features from "@/components/features/Features.astro";
+import LogoMarquee from "@/components/ui/LogoMarquee.astro";
+import Intro from "@/components/sections/Intro.astro";
+import { Reveal } from "@/components/ui/Reveal";
+import News from "@/components/sections/News.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="CNDlive">
+  <Main>
+    {/* 1. Hero 轮播图 (通常不需要滚动动画，因为在首屏，或者给个极短的延迟) */}
+    {/* 如果首屏就显示，建议不要加 Reveal，或者 delay 设短一点，防止白屏 */}
+    <div slot="full-width">
+      <HeroCarousel client:load slides={slidesData} />
+    </div>
+
+    {/* 2. Logo 跑马灯 */}
+    <LogoMarquee slot="full-width" />
+
+    {/* 3. 介绍文字 */}
+    <Reveal client:load slot="full-width">
+      <Intro />
+    </Reveal>
+	{/* 新闻板块 */}
+    <Reveal client:load slot="full-width">
+      <News />
+    </Reveal>
+    {/* 4. 特性 BentoGrid */}
+    <Reveal client:load slot="full-width">
+      <Features />
+    </Reveal>
+  </Main>
 </Layout>

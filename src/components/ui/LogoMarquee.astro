@@ -1,0 +1,48 @@
+---
+// src/components/ui/LogoMarquee.astro
+
+const logos = [
+  { name: "Nintendo", icon: "🎮" },
+  { name: "PlayStation", icon: "🕹️" },
+  { name: "Xbox", icon: "❎" },
+  { name: "OBS", icon: "🎥" },
+  { name: "YouTube", icon: "🔴" },
+  { name: "Twitch", icon: "💜" },
+  { name: "Discord", icon: "💬" },
+];
+---
+
+<div class="w-full bg-black py-10 border-y border-white/10 overflow-hidden">
+  
+  <div class="text-center mb-8">
+    <span class="text-zinc-500 text-sm font-medium tracking-widest uppercase">
+      Trusted by Streamers
+    </span>
+  </div>
+
+  <div class="relative flex overflow-x-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+    
+    <div class="group flex gap-16 whitespace-nowrap py-2">
+      
+      <div class="flex gap-16 animate-infinite-scroll group-hover:[animation-play-state:paused]">
+        {logos.map((logo) => (
+          <div class="flex items-center gap-3 text-2xl font-bold text-zinc-700 hover:text-white transition-colors cursor-default">
+            <span class="text-3xl">{logo.icon}</span>
+            <span>{logo.name}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="flex gap-16 animate-infinite-scroll group-hover:[animation-play-state:paused]" aria-hidden="true">
+        {logos.map((logo) => (
+          <div class="flex items-center gap-3 text-2xl font-bold text-zinc-700 hover:text-white transition-colors cursor-default">
+            <span class="text-3xl">{logo.icon}</span>
+            <span>{logo.name}</span>
+          </div>
+        ))}
+      </div>
+
+    </div>
+
+  </div>
+</div>
