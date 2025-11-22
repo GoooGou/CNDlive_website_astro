@@ -14,10 +14,11 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeMega, setActiveMega] = useState(null);
 
+  // 控制移动端菜单打开时，body 滚动禁用
   useEffect(() => {
     document.body.style.overflow = isMobileOpen ? 'hidden' : 'unset';
   }, [isMobileOpen]);
-
+  // 检查是否有子菜单
   const hasSubMenu = (type) => type === 'mega' || type === 'dropdown';
 
   return (
@@ -25,16 +26,18 @@ export default function Navbar() {
     backdrop-blur-md bg-surface-muted">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 h-full">
         <div className="flex justify-between items-center h-full">
-          
+          {/* 导航栏左侧：logo */}
           <div className="flex-shrink-0 flex items-center">
             <NavLogo />
           </div>
-
+          {/* 导航栏中间：桌面菜单 */}
           <div className="hidden lg:flex items-center space-x-8 h-full">
             {MENU_DATA.map((item, index) => (
               <div 
                 key={index}
                 className="relative h-full flex items-center group"
+                // 鼠标悬停时触发子菜单显示 检查传进来的 type 是否是 mega 或 dropdown 激活当前项
+                // 鼠标离开时清除激活状态
                 onMouseEnter={() => hasSubMenu(item.type) && setActiveMega(index)}
                 onMouseLeave={() => setActiveMega(null)}
               >
@@ -47,7 +50,7 @@ export default function Navbar() {
                     // border-t-4: 顶部边框 4px
                     "border-t-4", 
                     activeMega === index 
-                      ? "border-primary text-white" // 激活状态：红线 + 白字
+                      ? "border-primary text-white " // 激活状态：红线 + 白字
                       : "border-transparent text-white/80 hover:border-primary hover:text-white" // 默认：透明线 + 灰字 -> 悬停：红线 + 白字
                     // 🔥 核心样式修改结束 🔥
                   )}
@@ -95,7 +98,7 @@ export default function Navbar() {
                 </AnimatedButton>
             </div>
           </div>
-
+            {/* 导航栏右侧：移动端菜单按钮 */}
           <div className="lg:hidden flex items-center gap-4">
             <button 
               onClick={() => setIsMobileOpen(!isMobileOpen)}
