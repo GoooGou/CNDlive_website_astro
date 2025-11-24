@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import PostGrid from "../common/PostGrid.astro";
+import UniversalTitle from "../common/UniversalTitle.astro";
+
+
+const posts = await getCollection('news');
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const latestNews = sortedPosts.slice(0, 3);
+
+---
+
+<section class="container mx-auto py-24 px-4">
+      <UniversalTitle title="What's New" href="/news" />
+       
+       {/* 🔥 首页直接调用 Grid，并且开启 featured 模式 */}
+       {/* 这里没有面包屑，也没有返回按钮，完全独立 */}
+       <PostGrid 
+         posts={latestNews} 
+         basePath="/news" 
+         layout="featured" 
+       />
+</section>

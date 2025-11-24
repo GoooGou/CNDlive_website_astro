@@ -1,24 +1,34 @@
 // src/components/ui/Reveal.tsx
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 
 interface RevealProps {
   children: React.ReactNode;
-  width?: "fit-content" | "100%";
+  width?: "fit-content" | "100%"; // 这是控制 CSS style 的 width
   delay?: number;
   className?: string;
+  // 🔥 新增：控制布局宽度
+  layout?: "full" | "narrow"; 
 }
 
 export const Reveal: React.FC<RevealProps> = ({ 
   children, 
   width = "100%",
   delay = 0,
-  className = "" 
+  className = "",
+  layout = "narrow" // 🔥 默认是窄宽（居中模式），因为大部分内容都需要居中
 }) => {
-  // 这里的 variants 定义了两种状态：隐藏(hidden) 和 显示(visible)
+  
+  // 1. 根据 layout 属性决定 Tailwind 类名
+  // - narrow: 限制最大宽度 + 居中 + 两侧留白 (替代了原本 Main 里的 container)
+  // - full: 撑满屏幕宽度
+  const layoutClasses = layout === "narrow" 
+    ? "w-full max-w-7xl mx-auto px-4 sm:px-6" 
+    : "w-full";
+
   const variants = {
-    hidden: { opacity: 0,  },
-    visible: { opacity: 1, },
+    hidden: { opacity: 0, y: 30 }, // 加一点 y 轴位移，动效更有高级感
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
@@ -26,12 +36,11 @@ export const Reveal: React.FC<RevealProps> = ({
       variants={variants}
       initial="hidden"
       whileInView="visible"
-      // once: true 表示只触发一次，防止上下反复滚动时重复鬼畜
-      // margin: "-100px" 表示元素底部进入视口 100px 后才触发，不用等到完全露出来
       viewport={{ once: true, margin: "-100px" }} 
       transition={{ duration: 0.8, delay: delay, ease: "easeOut" }}
       style={{ width }}
-      className={className}
+      // 🔥 2. 将计算出的 layoutClasses 和传入的 className 拼接
+      className={`${layoutClasses} ${className}`}
     >
       {children}
     </motion.div>

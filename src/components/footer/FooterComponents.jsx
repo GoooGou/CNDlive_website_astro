@@ -49,7 +49,7 @@ export const SocialLinks = () => {
 // --- 4. 顶部订阅表单 ---
 export const NewsletterForm = () => (
   <div className="w-full max-w-4xl mx-auto text-center mb-16 relative z-10">
-    <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
+    <h2 className="text-2xl md:text-4xl font-bold text-white mb-8 capitalize">
       Subscribe to our newsletter
     </h2>
     <form className="flex flex-col md:flex-row gap-4 justify-center items-center">

@@ -1,20 +1,22 @@
 // src/content/config.ts
-import { z, defineCollection } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
-// 定义新闻集合的数据结构
-const newsCollection = defineCollection({
-  type: 'content', // v4+ 默认是 content
-  schema: z.object({
+const newsCollection   = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/news" }),
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
-    author: z.string().default('CNDlive Team'),
     pubDate: z.date(),
-    image: z.string().optional(), // 这里填写图片路径，如 '/images/news-1.jpg'
+    author: z.string(),
     tags: z.array(z.string()),
-    link: z.string().optional(), // 可选的外部链接，如果没有则跳转内部文章页
+    
+    // 修改处：加上 .optional()
+    // 这表示：这个字段可以没有，如果没有，它的值就是 undefined
+    cover: image().optional(), 
   }),
 });
 
 export const collections = {
-  'news': newsCollection,
+  news: newsCollection,
 };

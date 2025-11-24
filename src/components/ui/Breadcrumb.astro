@@ -1,0 +1,47 @@
+---
+import { ChevronRight, Home } from 'lucide-react';
+
+// 定义每一项的数据结构
+interface BreadcrumbItem {
+  label: string;
+  href?: string; // 如果有 href 则是链接，没有则是当前页（不可点）
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class="mb-6">
+  <ol class="flex items-center gap-2 text-sm text-zinc-500">
+    
+    {/* 1. 固定显示的 Home 图标 */}
+    <li>
+      <a href="/" class="flex items-center hover:text-white transition-colors" aria-label="Home">
+        <Home className="w-4 h-4" />
+      </a>
+    </li>
+
+    {/* 2. 循环渲染传入的路径 */}
+    {items.map((item) => (
+      <li class="flex items-center gap-2">
+        {/* 分隔符 */}
+        <ChevronRight className="w-4 h-4 text-zinc-700" />
+        
+        {item.href ? (
+          // 如果有链接，显示为可点击的灰色文字
+          <a href={item.href} class="hover:text-white transition-colors whitespace-nowrap">
+            {item.label}
+          </a>
+        ) : (
+          // 如果没有链接，说明是当前页，显示为白色高亮，并限制最大宽度防止换行难看
+          <span class="text-white font-medium line-clamp-1 max-w-[150px] sm:max-w-md" title={item.label}>
+            {item.label}
+          </span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

@@ -1,0 +1,50 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import UniversalCard from './UniversalCard.astro'; // 竖向大卡片
+import UniversalRow from './UniversalRow.astro';   // 横向小卡片
+
+interface Props {
+  posts: any[];       // 文章数据数组
+  basePath: string;   // 跳转路径前缀 (如 /news)
+  layout?: 'featured' | 'grid'; // 🔥 核心控制开关
+}
+
+const { posts, basePath, layout = 'grid' } = Astro.props;
+
+// 如果是 featured 模式，我们需要拆分数据
+const featuredPost = layout === 'featured' ? posts[0] : null;
+const sidePosts = layout === 'featured' ? posts.slice(1, 3) : [];
+---
+
+
+{layout === 'featured' && (
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+    
+    {/* 左侧大图 */}
+    {featuredPost && (
+      <UniversalCard post={featuredPost} basePath={basePath} />
+    )}
+
+    {/* 右侧列表 */}
+    <div class="flex flex-col gap-8 justify-between">
+      {sidePosts.map(post => (
+        <div class="flex-1">
+          <UniversalRow post={post} basePath={basePath} />
+        </div>
+      ))}
+    </div>
+
+  </div>
+)}
+
+{/* =========================================
+    模式 B: Grid 布局 (3列网格)
+    适用于：列表页、更多推荐
+   ========================================= */}
+{layout === 'grid' && (
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 row-gap-12">
+    {posts.map(post => (
+      <UniversalCard post={post} basePath={basePath} />
+    ))}
+  </div>
+)}

@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import ResourceIndex from '@/components/common/ResourceIndex.astro';
+
+const posts = await getCollection('news');
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<ResourceIndex 
+  title="Newsroom" 
+  subtitle="Latest updates from CNDLive."
+  posts={sortedPosts} 
+  basePath="/news" 
+/>

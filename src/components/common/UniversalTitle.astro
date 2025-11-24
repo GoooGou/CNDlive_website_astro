@@ -1,0 +1,47 @@
+---
+import { ArrowRight } from 'lucide-react';
+
+interface Props {
+  title: string;           // 必传：标题
+  href?: string;           // 选传：跳转链接 (如果不传，就不显示按钮)
+  linkText?: string;       // 选传：按钮文字 (默认 View All)
+  subtitle?: string;       // 选传：副标题 (用于补充说明)
+  className?: string;      // 选传：额外的样式
+}
+
+const { 
+  title, 
+  href, 
+  linkText = "View All", 
+  subtitle,
+  className = "" 
+} = Astro.props;
+---
+
+<div class={`flex flex-row justify-between items-start md:items-end gap-4 mb-10 border-b border-white/10 pb-6 ${className}`}>
+  
+  {/* 左侧：标题与副标题 */}
+  <div>
+    <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
+      {title}
+    </h2>
+    {subtitle && (
+      <p class="text-zinc-400 text-sm mt-2 max-w-lg">
+        {subtitle}
+      </p>
+    )}
+  </div>
+
+  {/* 右侧：按钮 (只有传入 href 才显示) */}
+  {href && (
+    <a 
+      href={href} 
+      class="group flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white hover:text-black hover:border-white transition-all duration-300 shrink-0"
+    >
+      <span class="text-sm font-medium">{linkText}</span>
+      {/* group-hover:translate-x-1 让箭头产生位移感 */}
+      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+    </a>
+  )}
+
+</div>

@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import NewsCover from './Cover.astro'; // 复用你的封面组件
+
+interface Props {
+  post: any;
+  basePath: string; // 关键：传入 '/news' 或 '/blog'
+}
+
+const { post, basePath } = Astro.props;
+const href = `${basePath}/${post.id}`;
+
+// 日期格式化
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+};
+---
+
+<a href={href} class="group flex gap-5 items-start h-full">
+  
+  {/* 左侧小图 */}
+  <div class="w-32 sm:w-48 aspect-[4/3] shrink-0 rounded-xl overflow-hidden border border-white/10">
+    <NewsCover 
+      src={post.data.cover} 
+      alt={post.data.title} 
+      title={post.data.title}
+      className="w-full h-full"
+    />
+  </div>
+
+  {/* 右侧文字 */}
+  {/* 右侧文字 */}
+  {/* 修改点：删除了 justify-center 和 py-1，保留 flex-col */}
+  <div class="flex flex-col flex-1 space-y-2">
+     
+     <div class="flex items-center gap-2 text-xs text-zinc-500">
+       <span>{post.data.author}</span>
+       <span>•</span>
+       <span>{formatDate(post.data.pubDate)}</span>
+     </div>
+
+     <h3 class="text-lg font-bold group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+        {post.data.title}
+     </h3>
+
+     <p class="text-zinc-400 text-sm line-clamp-2 hidden sm:block">
+       {post.data.description}
+     </p>
+   </div>
+</a>

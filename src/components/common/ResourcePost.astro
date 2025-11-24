@@ -1,0 +1,50 @@
+---
+import { render } from 'astro:content';
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import Cover from '@/components/common/Cover.astro'; // 你的通用封面组件
+
+interface Props {
+  post: any;
+  basePath: string;
+  parentTitle: string;
+}
+
+const { post, basePath, parentTitle } = Astro.props;
+// 🔥 核心：把 Markdown 渲染成 HTML
+const { Content } = await render(post); 
+---
+
+<ContentLayout
+  title={post.data.title}
+  breadcrumbItems={[
+    { label: parentTitle, href: basePath },
+    { label: post.data.title }
+  ]}
+  backHref={basePath}
+  backLabel={`Back to ${parentTitle}`}
+>
+
+  <article class="max-w-3xl mx-auto">
+    <header class="mb-10 text-center">
+      <div class="flex justify-center gap-2 mb-4">
+         {post.data.tags?.map((t:string) => (
+           <span class="text-xs bg-zinc-700 px-2 py-1 rounded text-zinc-300 border border-zinc-700">{t}</span>
+         ))}
+      </div>
+      <h1 class="text-3xl md:text-5xl font-bold mb-6 text-white leading-tight">{post.data.title}</h1>
+      <p class="text-zinc-500">By {post.data.author} • {post.data.pubDate.toLocaleDateString()}</p>
+    </header>
+
+    {/* 封面图 */}
+    <div class="rounded-2xl overflow-hidden mb-12 aspect-video border border-zinc-800 shadow-2xl">
+      <Cover src={post.data.cover} alt={post.data.title} title={post.data.title} />
+    </div>
+
+    {/* 正文渲染区 - 也就是你 Markdown 里的内容 */}
+    <div class="prose prose-invert prose-lg max-w-none 
+      prose-headings:text-white prose-p:text-zinc-300 prose-a:text-blue-400 prose-img:rounded-xl">
+      <Content />
+    </div>
+  </article>
+
+</ContentLayout>

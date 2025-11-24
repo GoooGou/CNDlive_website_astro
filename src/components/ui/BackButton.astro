@@ -1,0 +1,20 @@
+---
+import { ArrowLeft } from 'lucide-react';
+
+interface Props {
+  href?: string;   // 跳转链接，默认是首页
+  label?: string;  // 按钮文字，默认是 Back to Home
+  className?: string; // 允许外部传入额外的 margin 等样式
+}
+
+const { href = "/", label = "Back to Home", className = "" } = Astro.props;
+---
+
+<a 
+  href={href} 
+  class={`group inline-flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-white transition-colors duration-300 ${className}`}
+>
+  {/* group-hover:-translate-x-1 让箭头往左动一下 */}
+  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+  <span>{label}</span>
+</a>

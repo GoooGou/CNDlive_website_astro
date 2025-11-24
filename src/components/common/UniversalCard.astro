@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import { ArrowUpRight } from 'lucide-react';
+
+interface Props {
+  post: any;
+  basePath: string; // 🔥 关键：传入基础路径，例如 '/news', '/solutions'
+}
+
+const { post, basePath } = Astro.props;
+
+// 构建跳转链接
+const href = `${basePath}/${post.id}`;
+
+// ... 之前的 formatDate, getPlaceholder, getTagColor 逻辑保持不变 ...
+// (为了节省篇幅，这里省略辅助函数代码，直接用之前的即可)
+---
+
+<a href={href} class="group block h-full flex flex-col gap-4">
+  {/* 图片区域 */}
+  <div class="relative overflow-hidden rounded-xl aspect-video border border-white/10 shrink-0">
+    {post.data.cover ? (
+      <Image 
+        src={post.data.cover} 
+        alt={post.data.title} 
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center bg-zinc-900">
+         <span class="text-white/20 font-black">IMG</span>
+      </div>
+    )}
+  </div>
+
+  {/* 文字区域 */}
+  <div class="flex flex-col flex-1 space-y-2">
+    <h3 class="text-xl font-bold group-hover:text-primary transition-colors line-clamp-2">
+      {post.data.title}
+    </h3>
+    <p class="text-zinc-400 line-clamp-2 text-sm">
+      {post.data.description}
+    </p>
+  </div>
+</a>

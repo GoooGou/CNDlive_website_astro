@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src?: any;          // 图片源 (支持 Astro 优化图片对象)
+  alt: string;        // 图片描述 (SEO 必须)
+  title?: string;     // 文字种子 (用于生成固定的背景色)
+  className?: string; // 允许外部传入样式
+}
+
+const { 
+  src, 
+  alt, 
+  title = "CNDLive", // 默认兜底文字
+  className = "" 
+} = Astro.props;
+
+// 🎨 通用深色渐变池 (Tech Dark Mode)
+// 包含：深紫、深蓝、蓝绿、深红、黑灰
+const gradients = [
+  "bg-gradient-to-br from-indigo-900 to-slate-950",
+  "bg-gradient-to-br from-blue-900 to-zinc-950",
+  "bg-gradient-to-br from-teal-900 to-emerald-950",
+  "bg-gradient-to-br from-rose-900 to-stone-950",
+  "bg-gradient-to-br from-violet-900 to-fuchsia-950",
+  "bg-gradient-to-br from-zinc-800 to-neutral-950",
+  "bg-gradient-to-br from-cyan-900 to-sky-950",
+];
+
+// 🎲 确定性算法：只要 title 一样，算出来的颜色永远一样
+// 防止页面刷新或重新构建时颜色乱跳
+const getGradient = (str: string) => {
+  if (!str) return gradients[0];
+  return gradients[str.length % gradients.length];
+};
+
+const fallbackBg = getGradient(title);
+---
+
+<div class={`relative w-full h-full overflow-hidden bg-zinc-900 ${!src ? fallbackBg : ''} ${className}`}>
+  
+  {src ? (
+    // ✅ 模式 A: 正常显示图片
+    <Image 
+      src={src} 
+      alt={alt} 
+      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+    />
+  ) : (
+    // 🎨 模式 B: 无图兜底 (显示渐变色 + 标题水印)
+    <div class="w-full h-full flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-700">
+      {/* 标题水印：限制行数，超大字号，低透明度 */}
+      <span class="text-white/10 font-black text-3xl md:text-4xl uppercase tracking-widest text-center select-none leading-none line-clamp-3 break-words">
+        {title}
+      </span>
+    </div>
+  )}
+
+  {/* ✨ 质感增强：给所有封面加一个极细的半透明内边框，提升精致度 */}
+  <div class="absolute inset-0 ring-1 ring-inset ring-white/10 pointer-events-none rounded-[inherit]"></div>
+
+</div>

@@ -1,0 +1,40 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import PostGrid from '@/components/common/PostGrid.astro'; // 🔥 引入你的超级网格组件
+
+interface Props {
+  title: string;        // 页面标题 "Newsroom"
+  subtitle?: string;    // 副标题
+  posts: any[];         // 文章数据
+  basePath: string;     // 基础路径 "/news"
+}
+
+const { title, subtitle, posts, basePath } = Astro.props;
+//
+---
+
+{/* 1. 外层：使用 ContentLayout 处理面包屑、返回按钮、SEO */}
+<ContentLayout 
+  title={title}
+  breadcrumbItems={[{ label: title }]} 
+  backHref="/"
+  backLabel="Back to Home"
+>
+
+  {/* 2. 头部：标题区域 */}
+  <div class="mb-16 border-b border-zinc-800 pb-8">
+    <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-zinc-500 bg-clip-text text-transparent">
+      {title}
+    </h1>
+    {subtitle && <p class="text-zinc-400 text-lg max-w-2xl">{subtitle}</p>}
+  </div>
+
+  {/* 3. 内容：使用 PostGrid 展示列表 */}
+  {/* 🔥 这里强制使用 layout="grid"，因为列表页通常都是网格布局 */}
+  <PostGrid 
+    posts={posts} 
+    basePath={basePath} 
+    layout="grid" 
+  />
+
+</ContentLayout>
