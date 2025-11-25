@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+
+const { src, alt, title } = Astro.props;
+---
+<figure class="my-8">
+  <div class="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-900">
+    {/* 如果 src 是字符串(外部链接)直接用 img，如果是本地图片对象用 Image */}
+    {typeof src === 'string' ? (
+      <img src={src} alt={alt} class="w-full h-auto object-cover" />
+    ) : (
+      <Image src={src} alt={alt} class="w-full h-auto object-cover" />
+    )}
+  </div>
+  {/* 如果有 title 或 alt，显示在图片下方 */}
+  {(title || alt) && (
+    <figcaption class="text-center text-xs text-zinc-500 mt-3 font-mono">
+      {title || alt}
+    </figcaption>
+  )}
+</figure>

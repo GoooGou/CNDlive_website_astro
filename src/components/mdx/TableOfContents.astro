@@ -1,0 +1,104 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+// 1. 修改过滤逻辑：允许所有 H1 ~ H6 (或者根据你的需求保留 H1)
+const toc = headings; 
+---
+
+<nav class="toc-container">
+  <div class="mb-4 text-sm font-bold text-zinc-400 uppercase tracking-wider">
+    On this page
+  </div>
+  
+  <ul class="flex flex-col space-y-2 text-sm">
+    {toc.map((heading) => (
+      <li>
+        <a 
+          href={`#${heading.slug}`} 
+          class="toc-link block transition-all duration-200 text-zinc-500 hover:text-white border-l-2 border-transparent py-1"
+          data-slug={heading.slug}
+          // 2. 动态缩进：根据 depth 自动计算 padding-left
+          // H1=0rem, H2=0.75rem, H3=1.5rem ...
+          style={`padding-left: ${(heading.depth - 1) * 0.75}rem`}
+        >
+          {heading.text}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  // 样式配置
+  const ACTIVE_CLASS = ['text-red-600', 'font-bold', 'border-red-600', 'bg-red-500/5']; 
+  const INACTIVE_CLASS = ['text-zinc-500', 'border-transparent']; 
+
+  const links = document.querySelectorAll('.toc-link');
+  const headers = document.querySelectorAll('article h1, article h2, article h3, article h4, article h5, article h6');
+
+  // 核心函数：设置激活状态
+  function setActive(id) {
+    links.forEach((link) => {
+      const linkSlug = link.getAttribute('data-slug');
+      if (linkSlug === id) {
+        link.classList.remove(...INACTIVE_CLASS);
+        link.classList.add(...ACTIVE_CLASS);
+      } else {
+        link.classList.remove(...ACTIVE_CLASS);
+        link.classList.add(...INACTIVE_CLASS);
+      }
+    });
+  }
+
+  // 🔥 3. 点击事件监听 (Click Handler)
+  // 点击时，不管 Observer 说什么，强制激活当前点击项
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      // 这里的逻辑确保点击瞬间就变红，不会闪烁
+      const slug = link.getAttribute('data-slug');
+      setActive(slug);
+      
+      // 注意：这里不需要 preventDefault，让它自然锚点跳转即可
+      // 浏览器滚动时会自动触发下方的 Observer，但因为我们已经高亮了，视觉上是连续的
+    });
+  });
+
+  // 🔥 4. 滚动监听 (Scroll Observer)
+  const observerCallback = (entries) => {
+    // 找出所有正在视口中的标题
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        setActive(entry.target.id);
+      }
+    });
+  };
+
+  const observerOptions = {
+    root: null,
+    // 关键调整：
+    // 0px 0px -80% 0px 意味着：我们在屏幕顶部划了一道线 (top 20% 区域)
+    // 只有当标题穿过这条线时，才触发激活。这样比 threshold 更准。
+    rootMargin: '0px 0px -80% 0px',
+    threshold: 0 // 只要碰到一点点就算
+  };
+
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+  headers.forEach((header) => {
+    observer.observe(header);
+  });
+</script>
+
+<style>
+  .toc-container {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+</style>

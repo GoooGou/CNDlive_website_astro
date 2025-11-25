@@ -21,11 +21,11 @@ const {
 {/* 1. 继承最基础的全局 Layout */}
 <Layout title={title}>
   
-  <main class="py-24 bg-black min-h-screen text-white">
+  <main class="py-12 bg-black min-h-screen text-white ">
     <div class="container mx-auto px-4 max-w-7xl">
       
       {/* 2. 顶部导航区域 (面包屑 + 返回按钮) */}
-      <div class="flex flex-col gap-6 mb-12">
+      <div class="flex flex-col gap-6 mb-12 lg:flex-row lg:items-center justify-between align-center">
         
         {/* 如果传了面包屑数据，就显示 */}
         {breadcrumbItems.length > 0 && (

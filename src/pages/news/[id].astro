@@ -1,25 +1,27 @@
 ---
 import { getCollection } from 'astro:content';
-import ResourcePost from '@/components/common/ResourcePost.astro'; // 引入之前的通用详情组件
+import ResourcePost from '@/components/common/ResourcePost.astro';
 
-// 🔥 1. 核心修复：生成静态路径
-// 这个函数会告诉 Astro：哪怕我有 100 篇文章，也要在构建时全部生成出来
+// 1. 生成静态路径
 export async function getStaticPaths() {
-  const posts = await getCollection('news'); // 获取所有新闻
-  
+  const posts = await getCollection('news');
   return posts.map(post => ({
-    params: { id: post.id }, // 这里对应文件名 [id].astro
-    props: { post },         // 把整篇文章数据传递给页面
+    params: { id: post.id },
+    props: { post },
   }));
 }
 
-// 2. 获取当前页面的数据
+// 2. 获取数据
 const { post } = Astro.props;
+
+// ❌ 不需要在这里 import 组件了
+// ❌ 不需要在这里定义 const components = { ... }
+// ❌ 不需要在这里 await render(post)
 ---
 
-{/* 🔥 3. 直接调用通用组件 */}
+{/* 3. 直接调用布局组件，传数据进去即可 */}
 <ResourcePost 
   post={post} 
-  basePath="/news"       
+  basePath="/news" 
   parentTitle="Newsroom" 
 />

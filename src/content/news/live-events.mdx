@@ -7,31 +7,90 @@ cover: "./covers/c6-future.png"
 tags: ["Product Launch", "Hardware", "4K Streaming", "Encoder"]
 ---
 
-**Shenzhen, China, Sep. 2, 2024** – CNDLive is proud to announce the **C6**, a compact H.265 video encoder featuring dual interface 4K HDMI and 3G-SDI input and loop. Compatible with a wide range of audio and video capture equipment, the C6 is designed to be versatile and user-friendly for creators and professionals alike.
+## The Shift to IP Video
 
-## Designed for Usability
+The transition from SDI to IP-based workflows is no longer a trend; it's the standard. With the release of the **C6 Encoder**, we are pushing the boundaries of what's possible over a standard 1GbE network.
 
-The C6 Encoder is engineered with user-friendliness in mind. It features an intuitive setup menu that provides easy access to advanced configurations and system management. 
+{/* 1. 测试 Blockquote 组件 (Markdown 标准引用语法) */}
+> NDI 6 is the biggest leap forward in IP video technology since the protocol was introduced. It brings HDR and WAN connectivity to the masses.
 
-Its robust connection management ensures a stable and reliable network connection, while advanced user management enhances system security. With customizable time and timezone settings, the C6 Encoder caters to global live streaming needs. Additionally, the one-click upgrade and restart functionality ensures that your device always performs at its best.
+## 1. Network Architecture
 
-## Key Features
+Before plugging in any cameras, we need to talk about the backbone: **The Network Switch**.
 
-### 1. HDMI 2.0 and 3G-SDI Inputs
-The C6 supports **HDMI 2.0 with up to 3840x2160p30** video input and loop, along with 3G-SDI input and loop. You can mix HDMI and SDI sources, supporting up to 1920x1080p30, making it suitable for applications such as education, training, and professional broadcasting.
+{/* 2. 测试 Callout 组件 */}
+<Callout type="warning" title="C6 Encoder Review - 4K NDI Workflow">
+  For 4K60 setups, do **not** use unmanaged switches. We highly recommend a switch with **PoE+ (802.3at)** and full Layer 3 management capabilities to handle multicast traffic efficiently.
+</Callout>
 
-### 2. Multistreaming Capabilities
-The C6 supports a wide array of protocols, including **NDI|HX2, NDI|HX3, SRT, RTMP, RTMPS, HLS, and TS over UDP**. This enables simultaneous streaming to eight different platforms via main and sub streams, ensuring your content reaches every audience.
+{/* 3. 测试 PostImage 组件 (Markdown 标准图片语法) */}
 
-### 3. Built-in 2″ LCD Screen
-Stay in control with the built-in 2″ LCD screen. It allows you to easily start and stop streaming and recording. The JPEG preview ensures continuous source input monitoring, while real-time insights on system status, device details, network information, recording status, and video input formats are all clearly displayed.
+## 2. Hardware Setup Tutorial
 
-### 4. Advanced Connectivity and Management
-The C6 includes **Wi-Fi 6**, SNMP, and remote management capabilities. It also features text/image overlay, an intuitive web UI, and a physical shortcut key. The device offers low latency and reliable quality to ensure an optimal user experience.
+We have prepared a detailed video guide walking you through the physical connections of the C6 Encoder.
 
----
+{/* 4. 测试 Video 组件 */}
+<Video id="sBoWOiomL3s" title="C6 Encoder Hardware Setup Guide" />
 
-> **Fresh Face, Seasoned Team.**
-> 
-> Come and meet us at **IBC 2024**!
-> * **Booth No.:** #11.C11c and 3.A27
+## 3. Configuration Steps
+
+Once your hardware is connected, follow these steps to configure the signal flow.
+
+{/* 5. 测试 Steps 组件 (CSS 计数器会自动生成序号) */}
+<Steps>
+
+### Access the Web UI
+Connect your laptop to the same network. Open your browser and navigate to the encoder's default IP address (usually printed on the sticker).
+
+### Input Selection
+Navigate to the **Video Input** tab. Select either HDMI 2.0 or 12G-SDI depending on your camera source. Ensure the resolution matches your camera output.
+
+### Encoding Profile
+Set the encoding profile to **NDI HX3**. This offers the best balance between quality (visually lossless) and bandwidth (~80Mbps for 4K).
+
+</Steps>
+
+## 4. Firmware & Resources
+
+To get the best performance, please ensure your device is running the latest firmware `v2.4.0`.
+
+{/* 6. 测试 DownloadCard 组件 */}
+<DownloadCard 
+  title="C6_Encoder_Firmware_v2.4.0.zip" 
+  size="185 MB" 
+  href="#" 
+/>
+
+<Callout type="info" title="Update Note">
+  The device will reboot automatically after the update. Do not power off during the process.
+</Callout>
+
+## 5. SRT vs. NDI: Which one to choose?
+
+Many users ask us whether they should use SRT or NDI for remote production. Here is a quick breakdown.
+
+{/* 7. 测试 ProsCons 组件 */}
+<ProsCons>
+  <div slot="pros">
+    - **Ultra Low Latency**: Less than 1 frame on local networks.
+    - **Auto Discovery**: No need to type IP addresses manually.
+    - **Alpha Channel**: Native support for transparent video (perfect for graphics).
+  </div>
+  <div slot="cons">
+    - **High Bandwidth**: Requires stable, high-speed local network.
+    - **No Retransmission**: Unlike SRT, standard NDI does not handle packet loss well over the public internet.
+  </div>
+</ProsCons>
+
+## Conclusion
+
+Building a 4K studio is easier than ever with the right tools. If you are ready to upgrade, check out our [Product Page](https://google.com) for more details.
+
+{/* 8. 测试 Link 组件 (Markdown 标准链接语法) */}
+For more technical deep dives, read our [previous article on HDR Workflows](/news/previous-article).
+
+<SocialContact 
+  title="Have questions about NDI?" 
+  contactText="Contact Us" 
+  contactHref="/contact"
+/>

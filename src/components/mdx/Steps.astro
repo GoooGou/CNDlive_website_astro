@@ -1,0 +1,36 @@
+---
+// 这个组件只是一个容器，样式利用 CSS 计数器实现
+---
+<div class="not-prose steps-container space-y-4 my-8 border-l border-zinc-800 ml-4 pl-8">
+  <slot />
+</div>
+
+<style is:global>
+  /* 自动给内部的 h3 添加序号 */
+  .steps-container {
+    counter-reset: step;
+  }
+  .steps-container h3 {
+    position: relative;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  .steps-container h3::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: -46px; /* 根据 padding 调整 */
+    top: 0;
+    width: 28px;
+    height: 28px;
+    background-color: #27272a; /* zinc-800 */
+    color: #a1a1aa; /* zinc-400 */
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 14px;
+    border: 1px solid #3f3f46;
+  }
+</style>

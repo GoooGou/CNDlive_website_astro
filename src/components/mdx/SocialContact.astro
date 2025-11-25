@@ -1,0 +1,62 @@
+---
+import { Mail, Linkedin, Twitter, Facebook, Youtube, Github } from 'lucide-react';
+
+interface Props {
+  title?: string;        // 提示语，默认 "Connect with us"
+  contactHref?: string;  // 联系页面的路径，默认 "/contact"
+  contactText?: string;  // 按钮文字，默认 "Contact Us"
+}
+
+const { 
+  title = "Connect with CNDLive", 
+  contactHref = "/contact", 
+  contactText = "Contact Our Team" 
+} = Astro.props;
+
+// 🛠️ 配置你的社交媒体链接
+const socials = [
+  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn", color: "hover:text-[#0077b5]" },
+  { icon: Twitter, href: "https://twitter.com", label: "Twitter", color: "hover:text-[#1DA1F2]" },
+  { icon: Youtube, href: "https://youtube.com", label: "YouTube", color: "hover:text-[#FF0000]" },
+  { icon: Github, href: "https://github.com", label: "GitHub", color: "hover:text-white" },
+  // { icon: Facebook, href: "https://facebook.com", label: "Facebook", color: "hover:text-[#1877F2]" },
+];
+---
+
+{/* not-prose 非常重要：防止 Tailwind Typography 干扰我们的布局样式 */}
+<div class="not-prose my-12 p-1 rounded-2xl bg-gradient-to-r from-zinc-800 via-zinc-700 to-zinc-800">
+  <div class="bg-zinc-950 rounded-[14px] p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+    
+    {/* 左侧：标题 + 社交图标 */}
+    <div class="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
+      <h4 class="text-white font-bold text-lg m-0">{title}</h4>
+      
+      <div class="flex gap-3">
+        {socials.map((item) => (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={`p-2.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 transition-all duration-300 hover:scale-110 hover:bg-zinc-800 hover:border-zinc-700 ${item.color}`}
+            aria-label={item.label}
+          >
+            <item.icon className="w-5 h-5" />
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {/* 右侧：联系按钮 (CTA) */}
+    <a
+      href={contactHref}
+      class="group relative inline-flex items-center gap-2 px-8 py-3 bg-white text-zinc-900 font-bold rounded-full transition-all shadow-lg shadow-blue-900/20 hover:shadow-blue-500/40 hover:-translate-y-0.5"
+    >
+      <Mail className="w-4 h-4" />
+      <span>{contactText}</span>
+      
+      {/* 按钮光效 */}
+      <div class="absolute inset-0 rounded-full ring-1 ring-inset ring-white/20 pointer-events-none"></div>
+    </a>
+
+  </div>
+</div>

@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import ResourcePost from '@/components/common/ResourcePost.astro';
+import MDXContent from '@/components/mdx/MDXContent.astro';
+
+// 1. 生成静态路径 (3个页面)
+export async function getStaticPaths() {
+  const solutions = await getCollection('solutions');
+  return solutions.map(post => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+// 2. 获取数据
+const { post } = Astro.props;
+console.log(post);
+
+---
+
+{/* 3. 渲染通用详情页 */}
+<ResourcePost 
+  post={post} 
+  basePath="/solutions" 
+  parentTitle="Solutions"
+>
+  {/* 4. 注入 MDX 内容 */}
+  <MDXContent post={post} />
+</ResourcePost>

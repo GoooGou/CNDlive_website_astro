@@ -1,0 +1,27 @@
+---
+interface Props {
+  id?: string;    // YouTube ID
+  src?: string;   // 本地视频路径
+  title?: string;
+}
+const { id, src, title } = Astro.props;
+---
+<div class="not-prose my-8">
+  <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+    {id ? (
+      <iframe
+        src={`https://www.youtube.com/embed/${id}`}
+        title={title || "YouTube video"}
+        class="absolute top-0 left-0 w-full h-full"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    ) : src ? (
+      <video controls class="w-full h-full object-cover">
+        <source src={src} type="video/mp4" />
+      </video>
+    ) : null}
+  </div>
+  {title && <p class="text-center text-xs text-zinc-500 mt-2 font-mono">{title}</p>}
+</div>

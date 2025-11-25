@@ -13,5 +13,9 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [react(), mdx()]
+  integrations: [react(), mdx()],
+  prefetch: {
+    prefetchAll: true, // 自动预加载视口内的链接
+    defaultStrategy: 'hover', // 鼠标放上去就开始加载
+  },
 });

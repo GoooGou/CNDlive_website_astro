@@ -1,0 +1,22 @@
+---
+import { Download, FileText } from 'lucide-react';
+
+interface Props {
+  title: string;
+  size: string;
+  href: string;
+}
+const { title, size, href } = Astro.props;
+---
+<a href={href} target="_blank" class="not-prose group flex items-center gap-4 p-4 my-6 border border-zinc-800 bg-zinc-900/50 rounded-lg hover:bg-zinc-800 hover:border-zinc-700 transition-all no-underline">
+  <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-blue-500/20 transition-colors">
+    <FileText className="w-6 h-6 text-blue-400" />
+  </div>
+  <div class="flex-1">
+    <h4 class="text-white font-bold text-base m-0 leading-tight">{title}</h4>
+    <p class="text-zinc-500 text-xs m-0 mt-1">File Size: {size}</p>
+  </div>
+  <div class="pr-2">
+    <Download className="w-5 h-5 text-zinc-500 group-hover:text-white transition-colors" />
+  </div>
+</a>

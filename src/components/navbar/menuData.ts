@@ -62,10 +62,9 @@ export const MENU_DATA: NavItem[] = [
     label: "Solution",
     type: "dropdown", // 🔥 新增：普通下拉菜单
     items: [
-      { label: "TV Broadcast", href: "/solution/tv" },
-      { label: "Live Events", href: "/solution/live" },
-      { label: "Education", href: "/solution/edu" },
-      { label: "Enterprise", href: "/solution/enterprise" },
+      { label: "TV Broadcast", href: "/solutions/tv-broadcast" },
+      { label: "Live Events", href: "/solutions/live-events" },
+      { label: "House of Worship", href: "/solutions/house-of-worship" },
     ],
   },
   { label: "Support", type: "link", href: "/support" },

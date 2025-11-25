@@ -1,0 +1,52 @@
+---
+import { render } from 'astro:content';
+
+// 1. 引入所有自定义组件
+import PostImage from './PostImage.astro';
+import Blockquote from './Blockquote.astro';
+import Link from './Link.astro';
+import Callout from './Callout.astro';
+import Video from './Video.astro';
+import DownloadCard from './DownloadCard.astro';
+import ProsCons from './ProsCons.astro';
+import Steps from './Steps.astro';
+import SocialContact from './SocialContact.astro';
+import TeamMember from './TeamMember.astro';
+import StatsGrid from './StatsGrid.astro';
+import StatItem from './StatItem.astro';
+// 这里的 Cover 如果是在 common 目录下，请注意路径，如果在 mdx 目录下则用 './Cover.astro'
+import Cover from '../common/Cover.astro'; 
+
+interface Props {
+  post: any; // 接收文章数据对象
+}
+
+const { post } = Astro.props;
+
+// 2. 获取渲染后的 Content
+const { Content } = await render(post);
+
+// 3. 定义组件映射表 (Mapping)
+// 左边是 MDX/HTML 标签名，右边是你的组件
+const mdxComponents = {
+  // === 替换标准 Markdown 语法 ===
+  img: PostImage,       // ![alt](src) -> <PostImage />
+  blockquote: Blockquote, // > 引用 -> <Blockquote />
+  a: Link,              // [link](url) -> <Link />
+  
+  // === 注册自定义组件 (让 MDX 认识这些标签) ===
+  Callout,
+  Video,
+  DownloadCard,
+  ProsCons,
+  Steps,
+  SocialContact,
+  TeamMember,
+  StatsGrid,
+  StatItem,
+  Cover
+};
+---
+
+{/* 4. 渲染内容，并将组件映射传进去 */}
+<Content components={mdxComponents} />

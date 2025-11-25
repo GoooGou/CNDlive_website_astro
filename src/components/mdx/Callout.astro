@@ -1,0 +1,28 @@
+---
+import { Info, AlertTriangle, CheckCircle } from 'lucide-react';
+
+interface Props {
+  type?: 'info' | 'warning' | 'success';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props;
+
+const styles = {
+  info: { border: 'border-blue-500/50', bg: 'bg-blue-500/10', text: 'text-blue-200', icon: Info },
+  warning: { border: 'border-yellow-500/50', bg: 'bg-yellow-500/10', text: 'text-yellow-200', icon: AlertTriangle },
+  success: { border: 'border-green-500/50', bg: 'bg-green-500/10', text: 'text-green-200', icon: CheckCircle },
+};
+
+const currentStyle = styles[type];
+const Icon = currentStyle.icon;
+---
+<div class={`my-6 p-4 rounded-lg border ${currentStyle.border} ${currentStyle.bg} flex gap-4 items-start`}>
+  <Icon className={`w-5 h-5 shrink-0 mt-0.5 ${currentStyle.text}`} />
+  <div class="space-y-1">
+    {title && <p class={`font-bold text-sm ${currentStyle.text}`}>{title}</p>}
+    <div class="text-zinc-300 text-sm leading-relaxed">
+      <slot />
+    </div>
+  </div>
+</div>

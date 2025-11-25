@@ -1,0 +1,129 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/contact/ContactForm.jsx';
+import { MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
+
+// 静态配置：联系信息
+const contactInfo = [
+  {
+    icon: MapPin,
+    title: "Global HQ", // 改个更有气势的名字
+    lines: [
+      "3rd&5th Floor, Building 7,",
+      "Xinhua Industrial Building, Nanshan,",
+      "Shenzhen, Guangdong, China"
+    ]
+  },
+  {
+    icon: Phone,
+    title: "Call Us",
+    lines: ["(86)-0755-26888079", "Mon-Fri, 9am - 6pm (CST)"]
+  },
+  {
+    icon: Mail,
+    title: "Email Support",
+    lines: ["info@cndlive.com", "support@cndlive.com"]
+  }
+];
+---
+
+<Layout title="Contact Us | CNDLive">
+  <main class="bg-black min-h-screen relative overflow-hidden">
+    
+    {/* ✨ 1. 背景氛围灯光 (红色光晕) */}
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-red-900/20 blur-[120px] rounded-full pointer-events-none -z-10 mix-blend-screen"></div>
+
+    <div class="pt-32 pb-20 container mx-auto px-4 max-w-7xl">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        
+        {/* === 左侧：标题 + 信息卡片 === */}
+        <div class="space-y-12 animate-in fade-in slide-in-from-left-8 duration-700">
+          
+          {/* 标题区 */}
+          <div>
+            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight leading-tight">
+              Let's Start a <br/>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
+                Conversation.
+              </span>
+            </h1>
+            <p class="text-xl text-zinc-400 leading-relaxed max-w-md">
+              Whether you have a technical question or need a custom solution, our team is ready to help.
+            </p>
+          </div>
+
+          {/* 信息卡片列表 (垂直排列) */}
+          <div class="grid gap-6">
+            {contactInfo.map((item) => (
+              <div class="group flex items-start gap-6 p-6 rounded-2xl bg-zinc-900/40 border border-white/5 hover:bg-zinc-900/80 hover:border-red-500/30 transition-all duration-300">
+                {/* 图标 */}
+                <div class="shrink-0 w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
+                  <item.icon className="w-5 h-5 text-zinc-400 group-hover:text-white" />
+                </div>
+                
+                {/* 文字 */}
+                <div>
+                  <h3 class="text-lg font-bold text-white mb-2">{item.title}</h3>
+                  <div class="text-zinc-400 text-sm space-y-1">
+                    {item.lines.map(line => <p>{line}</p>)}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+        {/* === 右侧：表单区域 (悬浮卡片风格) === */}
+        <div class="lg:sticky lg:top-32 animate-in fade-in slide-in-from-right-8 duration-700 delay-100">
+          {/* 外层渐变边框 */}
+          <div class="relative p-[1px] rounded-3xl bg-gradient-to-b from-white/10 to-transparent shadow-2xl shadow-black/50">
+            
+            {/* 内部背景 */}
+            <div class="bg-[#0a0a0a] rounded-[23px] p-8 md:p-10 relative overflow-hidden">
+              
+              {/* 装饰：右上角红色光点 */}
+              <div class="absolute -top-20 -right-20 w-60 h-60 bg-red-600/10 blur-[60px] rounded-full pointer-events-none"></div>
+
+              <div class="relative z-10">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                  Send us a message
+                  <ArrowRight className="w-5 h-5 text-red-600" />
+                </h3>
+                
+                {/* 调用表单组件 */}
+                <ContactForm client:load />
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {/* === 底部：全宽地图 (带融合遮罩) === */}
+    <section class="relative w-full h-[500px] border-t border-zinc-800">
+      {/* 地图滤镜：变暗 + 反色 + 降饱和度 */}
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3692.579576640236!2d113.91461731157742!3d22.25601197963891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3403fc0423722a29%3A0x1e02900000000000!2sShenzhen!5e0!3m2!1sen!2scn!4v1620000000000!5m2!1sen!2scn" 
+        width="100%" 
+        height="100%" 
+        style="border:0; filter: grayscale(100%) invert(92%) contrast(83%);" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade"
+        class="opacity-80 hover:opacity-100 transition-opacity duration-500"
+      >
+      </iframe>
+
+      {/* 顶部融合遮罩 (让地图和上面内容的连接处变柔和) */}
+      <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
+      
+      {/* 红色覆盖层 (让地图带一点点品牌色调) */}
+      <div class="absolute inset-0 bg-red-900/5 pointer-events-none mix-blend-overlay"></div>
+    </section>
+
+  </main>
+</Layout>

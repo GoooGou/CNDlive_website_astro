@@ -1,0 +1,43 @@
+---
+import { getEntry } from 'astro:content';
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import MDXContent from '@/components/mdx/MDXContent.astro'; // 🔥 复用超级渲染器
+
+// 1. 获取 content/pages/about.mdx 的数据
+const post = await getEntry('pages', 'about');
+
+if (!post) {
+  throw new Error('Could not find about page!');
+}
+---
+
+<ContentLayout
+  title={post.data.title}
+  breadcrumbItems={[{ label: 'About Us' }]}
+  backHref="/"
+  backLabel="Back to Home"
+>
+  <article class="max-w-4xl mx-auto">
+    
+    {/* 头部标题区 */}
+    <div class="text-center mb-16">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white tracking-tight">
+        {post.data.title}
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        {post.data.description}
+      </p>
+    </div>
+
+    {/* 正文渲染区 */}
+    <div class="prose prose-invert prose-lg max-w-none 
+      prose-headings:text-white prose-headings:font-bold
+      prose-p:text-zinc-300 prose-strong:text-white">
+      
+      {/* 🔥 完美复用！自动注入 Callout, Video, Steps 等所有组件 */}
+      <MDXContent post={post} />
+      
+    </div>
+
+  </article>
+</ContentLayout>

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import clsx from 'clsx';
-import { MENU_DATA } from '@/data/menuData'; // 确保路径对
+import { MENU_DATA } from '@/components/navbar/menuData'; // 确保路径对
 
 export default function MobileMenu({ isOpen, onClose }) {
   const [expandedGroups, setExpandedGroups] = useState({});

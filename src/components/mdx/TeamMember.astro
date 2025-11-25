@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  name: string;
+  role: string;
+  image?: string; // 头像路径
+}
+
+const { name, role, image } = Astro.props;
+---
+
+<div class="not-prose group relative p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-300">
+  {/* 头像区域 */}
+  <div class="aspect-square w-full overflow-hidden rounded-lg bg-zinc-800 mb-4 relative">
+    {image ? (
+      <img src={image} alt={name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center text-zinc-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+    )}
+    
+    {/* 悬停光效 */}
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  </div>
+
+  {/* 信息区域 */}
+  <h3 class="text-white font-bold text-lg leading-tight">{name}</h3>
+  <p class="text-blue-400 text-sm font-medium mt-1">{role}</p>
+</div>
